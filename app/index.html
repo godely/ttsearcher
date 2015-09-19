@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" ng-app="tgsearcherApp">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>News Searcher</title>
+
+
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300' rel='stylesheet' type='text/css'>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/default.css">
+
+  <!-- Javascript (dependencies) -->
+  <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+  <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+  <script type="text/javascript" src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+  <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+  <!-- Javascript (application) -->
+  <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/services.js"></script>
+  <script type="text/javascript" src="js/controllers.js"></script>
+  
+
+</head>
+<body ng-controller="IndexCtrl">
+
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Buscador de Notícias</h1>
+        <div class="input-group" id="adv-search">
+          <input type="text" class="form-control" placeholder="Procurando por..." 
+            ng-model="terms" />
+          <div class="input-group-btn">
+              <div class="btn-group" role="group">
+                  <div class="dropdown dropdown-lg">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                      <div class="dropdown-menu dropdown-menu-right" role="menu">
+                          <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                              <label for="filter">Modo de busca</label>
+                              <select class="form-control" ng-model="mode">
+                                  <option value="boolean_or">Booleano (or)</option>
+                                  <option value="boolean_and">Booleano (and)</option>
+                                  <option value="fuzzy_or">Booleano Aproximado (or)</option>
+                                  <option value="fuzzy_and">Booleano Aproximado (and)</option>
+                              </select>
+                            </div>
+                            <div class="form-group">
+                              <label for="contain">Usar stoplist?</label>
+                              <select class="form-control" ng-model="stoplist">
+                                  <option value="yes">Sim</option>
+                                  <option value="no">Não</option>
+                              </select>
+                            </div>
+                            <div class="form-group">
+                              <label for="contain">Usar stemização?</label>
+                              <select class="form-control" ng-model="stemming">
+                                  <option value="yes">Sim</option>
+                                  <option value="no">Não</option>
+                              </select>
+                            </div>
+                          </form>
+                      </div>
+                  </div>
+                  <button type="button" class="btn btn-primary" ng-click="search()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="loading" ng-if="loading">
+      <img src="img/default.gif" />
+    </div>
+
+  <hgroup class="col-md-8 col-md-offset-2">
+    <h2><strong>{{ results.length }}</strong> notícias encontradas</h2>        
+  </hgroup>
+
+
+    <section id="results" class="col-xs-12 col-sm-6 col-md-8 col-md-offset-2">
+      <article class="search-result row" ng-repeat="result in pageResults">
+        
+        <div class="col-xs-12 col-sm-12 col-md-12 excerpet">
+          <h3 ng-if="result.highlight.title"><a href="{{ result.link }}" title="" ng-bind-html="result.highlight.title"></a></h3>
+          <h3 ng-if="!result.highlight.title"><a href="{{ result.link }}" title="">
+            {{ result._source.title }}
+          </a></h3>
+
+          <p ng-if="!result.highlight.content" style="display: inline"> {{ result._source.content | limitTo: 250 }}...
+          </p>  
+
+          <p ng-if="result.highlight.content" style="display: inline" 
+            ng-repeat="fragment in result.highlight.content">
+            ...<span  ng-bind-html="fragment">...
+          </p>            
+        </div>
+        
+      </article>
+    </section>
+
+    <div class="col-md-8 col-md-offset-2">
+      <nav>
+        <ul class="pager">
+          <li class="previous"><a href="#" ng-class="{disabled: page == 0}" ng-click="page = page-1"><span aria-hidden="true">&larr;</span> Anterior</a></li>
+          <li class="next"><a href="#" ng-click="page = page + 1">Próxima <span aria-hidden="true">&rarr;</span></a></li>
+        </ul>
+      </nav>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "tg-searcher-ir",
+  "dependencies": {
+    "elasticsearch": "^8.1.0",
+    "freebase": "^3.1.2",
+    "osmosis": "0.0.8",
+    "request": "^2.61.0",
+    "sleep": "^3.0.0",
+    "slugify": "^0.1.1",
+    "sync-request": "^2.0.1",
+    "textract": "^1.1.1"
+  }
+}
