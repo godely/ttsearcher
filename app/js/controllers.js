@@ -25,6 +25,16 @@ tgsearcherApp.controller('IndexCtrl', ['$scope', 'Publications',
 			$scope.loading = false;
 		}
 
+		function ignoreFilter(response){
+			console.log("Found " + response.data.length + " results");
+			$scope.results = response.data;
+			console.log(response.data);
+			$scope.page = 0;
+			$scope.updatePaging();
+			$scope.loading = false;
+		}
+
+
 		$scope.search = function search(){
 
 			$scope.loading = true;
@@ -35,7 +45,7 @@ tgsearcherApp.controller('IndexCtrl', ['$scope', 'Publications',
 				analyzer = "full";
 			}else if($scope.stoplist == "yes"){
 				analyzer = "stoplist";
-			}else{
+			}else if($scope.stemming == "yes"){
 				analyzer = "stemmer";
 			}
 
@@ -50,9 +60,17 @@ tgsearcherApp.controller('IndexCtrl', ['$scope', 'Publications',
 			}else if($scope.mode == 'fuzzy_and'){
 				Publications.fuzzySearch($scope.terms, analyzer, 'and').then(filter);
 			}
+	
+		}
 
-			
-			
+		$scope.all = function all(){
+
+			$scope.loading = true;
+
+			Publications.all().then(ignoreFilter);
+
+			console.log("Searching for ALL");
+	
 		}
 
 		$scope.updatePaging = function updatePaging(){

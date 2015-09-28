@@ -27,50 +27,11 @@
 </head>
 <body ng-controller="IndexCtrl">
 
-  <div class="container">
+  <div class="container" ng-init="all()">
 
     <div class="row">
       <div class="col-md-12">
         <h1>Buscador de Notícias</h1>
-        <div class="input-group" id="adv-search">
-          <input type="text" class="form-control" placeholder="Procurando por..." 
-            ng-model="terms" />
-          <div class="input-group-btn">
-              <div class="btn-group" role="group">
-                  <div class="dropdown dropdown-lg">
-                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-                      <div class="dropdown-menu dropdown-menu-right" role="menu">
-                          <form class="form-horizontal" role="form">
-                            <div class="form-group">
-                              <label for="filter">Modo de busca</label>
-                              <select class="form-control" ng-model="mode">
-                                  <option value="boolean_or">Booleano (or)</option>
-                                  <option value="boolean_and">Booleano (and)</option>
-                                  <option value="fuzzy_or">Booleano Aproximado (or)</option>
-                                  <option value="fuzzy_and">Booleano Aproximado (and)</option>
-                              </select>
-                            </div>
-                            <div class="form-group">
-                              <label for="contain">Usar stoplist?</label>
-                              <select class="form-control" ng-model="stoplist">
-                                  <option value="yes">Sim</option>
-                                  <option value="no">Não</option>
-                              </select>
-                            </div>
-                            <div class="form-group">
-                              <label for="contain">Usar stemização?</label>
-                              <select class="form-control" ng-model="stemming">
-                                  <option value="yes">Sim</option>
-                                  <option value="no">Não</option>
-                              </select>
-                            </div>
-                          </form>
-                      </div>
-                  </div>
-                  <button type="button" class="btn btn-primary" ng-click="search()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-              </div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -85,9 +46,9 @@
 
     <section id="results" class="col-xs-12 col-sm-6 col-md-8 col-md-offset-2">
       <article class="search-result row" ng-repeat="result in pageResults">
-        
+
         <div class="col-xs-12 col-sm-12 col-md-12 excerpet">
-          [{{ result._source.count }}]<h3 ng-if="result.highlight.title"><a href="{{ result.link }}" title="" ng-bind-html="result.highlight.title"></a></h3>
+          [{{ result._source.count}}]<h3 ng-if="result.highlight.title"><a href="{{ result.link }}" title="" ng-bind-html="result.highlight.title"></a></h3>
           <h3 ng-if="!result.highlight.title"><a href="{{ result.link }}" title="">
             {{ result._source.title }}
           </a></h3>

@@ -17,7 +17,8 @@ function create(result){
 		  body: {
 		    title: result.title,
 		    link: result.link,
-		    content: result.content
+		    content: result.content,
+		    count: count
 		  }
 		}, function (error, response) {
 		  if(error) return console.log("Error indexing document for " + result.author + " " + error);
@@ -41,7 +42,6 @@ function crawl(page){
 
 		if(count < 220){
 			create(result);
-
 			count++;
 		}
 

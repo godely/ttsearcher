@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var elasticsearch = require('elasticsearch');
+var fs = require('fs');
 
 var server = app.listen(3000, 'localhost', function () {
   var host = server.address().address;
@@ -61,6 +62,13 @@ app.post('/boolean', function (req, res) {
 		}
 	}).then(function (body) {
 	  	var hits = body.hits.hits;
+	  	var str = "";
+	  	hits.forEach(function(data){
+	  		str += data._source.count + ", ";
+	  	})
+
+	  	fs.writeFileSync('out.txt',  str);
+	  	
 		res.send(hits);
 	}, function (error) {
 	  console.trace(error.message);
@@ -112,4 +120,27 @@ app.post('/fuzzy', function (req, res) {
 	  console.trace(error.message);
 	});
   
+});
+
+
+
+app.post('/all', function (req, res) {
+
+	console.log("Searching ALL");
+
+	client.search({
+		index: 'news',
+		type: 'news_default',
+		size: 1000,
+	  	body: {
+	  		"sort" : [
+		        { "count" : {"order" : "asc"}}
+		    ],
+		}
+	}).then(function (body) {
+	  	var hits = body.hits.hits;
+		res.send(hits);
+	}, function (error) {
+	  console.trace(error.message);
+	});
 });
