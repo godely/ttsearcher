@@ -25,6 +25,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.post('/boolean', function (req, res) {
 
+
 	var type = "news_default";
 	if(req.body.analyzer == "full"){
 		type = "news_full"
