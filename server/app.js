@@ -23,6 +23,9 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
+var path = require('path');
+app.use(express.static(path.resolve('../app'))); // set the static files location /public/img will be /img for users
+
 app.post('/boolean', function (req, res) {
 
 	var type = "news_default";
