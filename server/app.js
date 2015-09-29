@@ -28,6 +28,7 @@ app.use(express.static(path.resolve('../app'))); // set the static files locatio
 
 app.post('/boolean', function (req, res) {
 
+
 	var type = "news_default";
 	if(req.body.analyzer == "full"){
 		type = "news_full"
